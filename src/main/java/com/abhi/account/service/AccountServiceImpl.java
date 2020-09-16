@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.abhi.account.dto.AccountDto;
 import com.abhi.account.model.Account;
 import com.abhi.account.repo.AccountRepository;
+import com.abhi.account.util.AccountDetailsNotFoundException;
 import com.abhi.account.util.CustomBeanUtility;
 import com.abhi.account.util.InvalidInputException;
 
@@ -28,12 +29,13 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public AccountDto getAccountDetails(Long accountNo) {
+	public AccountDto getAccountDetails(Long accountNo) throws AccountDetailsNotFoundException {
 		Optional<Account> accountOp = accountRepo.findById(accountNo);
 		if (accountOp.isPresent()) {
 			return CustomBeanUtility.convertToDto(accountOp.get());
+		} else {
+			throw new AccountDetailsNotFoundException();
 		}
-		return null;
 	}
 
 }

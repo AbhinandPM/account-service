@@ -13,6 +13,7 @@ import com.abhi.account.model.Transaction;
 import com.abhi.account.repo.AccountRepository;
 import com.abhi.account.repo.AccountTransactionDao;
 import com.abhi.account.repo.TransactionRepository;
+import com.abhi.account.util.AccountDetailsNotFoundException;
 import com.abhi.account.util.CustomBeanUtility;
 import com.abhi.account.util.InvalidInputException;
 
@@ -30,16 +31,22 @@ public class TransactionServiceImpl implements TransactionService {
 	private AccountRepository accountRepo;
 
 	@Override
-	public TransactionDto handleTransaction(TransactionDto transactionDto) throws InvalidInputException {
-		if( null == transactionDto) {
+	public TransactionDto handleTransaction(TransactionDto transactionDto)
+			throws InvalidInputException, AccountDetailsNotFoundException {
+
+		if (null == transactionDto) {
 			throw new InvalidInputException("Transaction details are required.");
 		}
-		transactionDto.setTransactionDate(LocalDateTime.now());
-		Optional<Account> accountOp = accountRepo.findById(transactionDto.getAccountId());
-		accountOp.orElseThrow(() -> new InvalidInputException("Invalid Account Number"));
-		Transaction transaction = CustomBeanUtility.convertToDomain(transactionDto);
-		accountTransactionDao.performTransaction(transaction);
-		return CustomBeanUtility.convertToDto(transactionRepo.save(transaction));
+		Optional<Account> accountOp = accountRepo.findById(transactionDto.getAccountNo());
+		if (accountOp.isPresent()) {
+			transactionDto.setTransactionDate(LocalDateTime.now());
+			Transaction transaction = CustomBeanUtility.convertToDomain(transactionDto);
+			accountTransactionDao.performTransaction(transaction);
+			return CustomBeanUtility.convertToDto(transactionRepo.save(transaction));
+		} else {
+			throw new AccountDetailsNotFoundException();
+		}
+
 	}
 
 }

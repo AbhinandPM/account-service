@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.abhi.account.dto.AccountDto;
 import com.abhi.account.service.AccountService;
+import com.abhi.account.util.AccountDetailsNotFoundException;
 import com.abhi.account.util.InvalidInputException;
 
 @RestController
@@ -23,7 +24,7 @@ public class AccountController {
 	}
 
 	@GetMapping("/account/{accountNo}")
-	public AccountDto getAccountDetailsByAccountNo(@PathVariable Long accountNo) {
+	public AccountDto getAccountDetailsByAccountNo(@PathVariable Long accountNo) throws AccountDetailsNotFoundException {
 		return accountService.getAccountDetails(accountNo);
 	}
 

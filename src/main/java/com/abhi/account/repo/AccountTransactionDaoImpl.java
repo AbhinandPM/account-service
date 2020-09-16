@@ -19,9 +19,9 @@ public class AccountTransactionDaoImpl implements AccountTransactionDao {
 
 	@Override
 	public Transaction performTransaction(Transaction transaction) {
-		
-		Account account = entityManager.find(Account.class, transaction.getAccountId(), LockModeType.PESSIMISTIC_WRITE);
-		
+
+		Account account = entityManager.find(Account.class, transaction.getAccountNo(), LockModeType.PESSIMISTIC_WRITE);
+
 		if ("credit".equalsIgnoreCase(transaction.getTransactionType())) {
 			BigDecimal balance = account.getAccountBalance();
 			balance = balance.add(transaction.getAmount());

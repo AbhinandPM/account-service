@@ -1,6 +1,7 @@
 package com.abhi.account.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,6 +19,7 @@ public class Account {
 	private String ifscCode;
 	private String accountType;
 	private BigDecimal accountBalance;
+	private LocalDateTime createdDate;
 
 	public Long getAccountNo() {
 		return accountNo;
@@ -65,6 +67,14 @@ public class Account {
 
 	public void setAccountBalance(BigDecimal accountBalance) {
 		this.accountBalance = accountBalance;
+	}
+
+	public LocalDateTime getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(LocalDateTime createdDate) {
+		this.createdDate = createdDate;
 	}
 
 }

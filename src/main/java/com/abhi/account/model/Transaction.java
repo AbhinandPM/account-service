@@ -15,7 +15,7 @@ public class Transaction {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long transactionId;
 
-	private Long accountId;
+	private Long accountNo;
 	private Long customerId;
 	private BigDecimal amount;
 	private String transactionType;
@@ -31,12 +31,12 @@ public class Transaction {
 		this.transactionId = transactionId;
 	}
 
-	public Long getAccountId() {
-		return accountId;
+	public Long getAccountNo() {
+		return accountNo;
 	}
 
-	public void setAccountId(Long accountId) {
-		this.accountId = accountId;
+	public void setAccountNo(Long accountNo) {
+		this.accountNo = accountNo;
 	}
 
 	public Long getCustomerId() {

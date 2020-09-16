@@ -1,8 +1,12 @@
 package com.abhi.account.dto;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
-public class AccountDto {
+public class AccountDto implements Serializable {
+
+	private static final long serialVersionUID = -7050565814783376486L;
 
 	private Long accountNo;
 	private Long branchCode;
@@ -10,6 +14,7 @@ public class AccountDto {
 	private String ifscCode;
 	private String accountType;
 	private BigDecimal accountBalance;
+	private LocalDateTime createdDate;
 
 	public Long getAccountNo() {
 		return accountNo;
@@ -57,6 +62,14 @@ public class AccountDto {
 
 	public void setAccountBalance(BigDecimal accountBalance) {
 		this.accountBalance = accountBalance;
+	}
+
+	public LocalDateTime getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(LocalDateTime createdDate) {
+		this.createdDate = createdDate;
 	}
 
 }

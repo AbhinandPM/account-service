@@ -1,12 +1,15 @@
 package com.abhi.account.dto;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class TransactionDto {
+public class TransactionDto implements Serializable {
+
+	private static final long serialVersionUID = 8894566769609725948L;
 
 	private Long transactionId;
-	private Long accountId;
+	private Long accountNo;
 	private Long customerId;
 	private BigDecimal amount;
 	private String transactionType;
@@ -22,12 +25,12 @@ public class TransactionDto {
 		this.transactionId = transactionId;
 	}
 
-	public Long getAccountId() {
-		return accountId;
+	public Long getAccountNo() {
+		return accountNo;
 	}
 
-	public void setAccountId(Long accountId) {
-		this.accountId = accountId;
+	public void setAccountNo(Long accountNo) {
+		this.accountNo = accountNo;
 	}
 
 	public Long getCustomerId() {

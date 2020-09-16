@@ -10,15 +10,19 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.abhi.account.dto.ErrorDto;
+
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	private static final Logger EXE_LOGGER = LoggerFactory.getLogger(RestResponseEntityExceptionHandler.class);
 
-	@ExceptionHandler(value = { InvalidInputException.class })
+	@ExceptionHandler(value = { InvalidInputException.class, AccountDetailsNotFoundException.class })
 	protected ResponseEntity<Object> handleConflict(Exception ex, WebRequest request) {
-		String bodyOfResponse = "Exception : " + ex.getMessage();
 		EXE_LOGGER.error(ex.getMessage(), ex);
-		return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+		ErrorDto error = new ErrorDto("Exception : " + ex.getMessage());
+		return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 	}
+	
+	
 }
