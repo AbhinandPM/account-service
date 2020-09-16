@@ -1,5 +1,7 @@
 package com.abhi.account.service;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,10 @@ public class AccountServiceImpl implements AccountService {
 			throw new InvalidInputException("Account Details are Required");
 		}
 		Account account = CustomBeanUtility.convertToDomain(accountDto);
+		if (null == account.getAccountBalance()) {
+			account.setAccountBalance(BigDecimal.ZERO);
+		}
+		account.setCreatedDate(LocalDateTime.now());
 		account = accountRepo.save(account);
 		return CustomBeanUtility.convertToDto(account);
 	}
