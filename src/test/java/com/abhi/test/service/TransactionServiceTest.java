@@ -13,6 +13,7 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.abhi.account.dto.TransactionDto;
@@ -39,11 +40,15 @@ class TransactionServiceTest {
 	@Mock
 	private AccountTransactionDao accountTransactionDao;
 
+	@Mock
+	private JmsTemplate jmsTemplate;
+
 	@InjectMocks
 	private TransactionServiceImpl transactionService;
 
 	@Test
-	void shouldPerformDebitTransaction() throws JsonProcessingException, InvalidInputException, AccountDetailsNotFoundException {
+	void shouldPerformDebitTransaction()
+			throws JsonProcessingException, InvalidInputException, AccountDetailsNotFoundException {
 
 		TransactionDto transactionDto = new TransactionDto();
 		transactionDto.setAccountNo(123L);
@@ -63,9 +68,9 @@ class TransactionServiceTest {
 		when(transactionRepo.save(ArgumentMatchers.any()))
 				.thenReturn(CustomBeanUtility.convertToDomain(transactionDto));
 
-			TransactionDto transaction = transactionService.handleTransaction(transactionDto);
-			assertThat(transaction).isNotNull();
-			assertThat(transaction.getAccountNo()).isEqualTo(123L);
+		TransactionDto transaction = transactionService.handleTransaction(transactionDto);
+		assertThat(transaction).isNotNull();
+		assertThat(transaction.getAccountNo()).isEqualTo(123L);
 	}
 
 	@Test

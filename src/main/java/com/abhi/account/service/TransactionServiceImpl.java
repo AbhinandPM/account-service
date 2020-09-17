@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +31,12 @@ public class TransactionServiceImpl implements TransactionService {
 
 	@Autowired
 	private AccountRepository accountRepo;
+	
+	@Autowired
+	private JmsTemplate jmsTemplate;
+
+	@Value("${TRANSACTION_STATUS_QUEUE}")
+	private String transactionStatusQueue;
 
 	@Override
 	public TransactionDto handleTransaction(TransactionDto transactionDto)
@@ -42,7 +50,9 @@ public class TransactionServiceImpl implements TransactionService {
 			transactionDto.setTransactionDate(LocalDateTime.now());
 			Transaction transaction = CustomBeanUtility.convertToDomain(transactionDto);
 			accountTransactionDao.performTransaction(transaction);
-			return CustomBeanUtility.convertToDto(transactionRepo.save(transaction));
+			transactionDto = CustomBeanUtility.convertToDto(transactionRepo.save(transaction));
+			jmsTemplate.convertAndSend(transactionStatusQueue, transactionDto);
+			return transactionDto;
 		} else {
 			throw new AccountDetailsNotFoundException();
 		}
